@@ -61,19 +61,19 @@ public class func {
 //        return m.sortMerge(val);
 //    }
 
-   @Benchmark
-    public int[] bubletime() {
-        buble m = new buble();
-        return m.sortBuble(val);
-    }    
 //   @Benchmark
-//    public int quicktest() {
-//        Arrays.sort(val);
-//        return 0;
-//    } 
+//    public int[] bubletime() {
+//        buble m = new buble();
+//        return m.sortBuble(val);
+//    }    
+   @Benchmark
+    public int quicktest() {
+        Arrays.sort(val);
+        return 0;
+    } 
     
     public static void main(String[] args) throws RunnerException, FileNotFoundException {
-
+        System.out.println("changes");  
         System.setOut(new PrintStream("/home/ania/res.txt"));
         
         org.openjdk.jmh.runner.options.Options opt = new OptionsBuilder()
