@@ -46,7 +46,7 @@ public class func {
     }
 
     @Param({"100", "200", "400", "800", "10000", "40000", "160000" })
-   // @Param({"100", "200", "400", "800", "1600",    "10000", "40000", "160000" ,"640000"})
+    // @Param({"100", "200", "400", "800", "1600",    "10000", "40000", "160000" ,"640000"})
     //@Param({"400","800", "1600", "3200", "6400", "160000" ,"640000","2560000", "10240000" })
     private int len;
     
@@ -73,7 +73,7 @@ public class func {
     } 
     
     public static void main(String[] args) throws RunnerException, FileNotFoundException {
-        System.out.println("changes");  
+        
         System.setOut(new PrintStream("/home/ania/res.txt"));
         
         org.openjdk.jmh.runner.options.Options opt = new OptionsBuilder()
