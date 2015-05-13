@@ -2,6 +2,7 @@ package srjmh;
 
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import org.openjdk.jmh.annotations.Benchmark;
@@ -22,6 +23,7 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 //@OutputTimeUnit(TimeUnit.NANOSECONDS)
 public class func {
 
+    BinaryHeap bh;
     int[] val;
     int x;
 
@@ -42,17 +44,15 @@ public class func {
 //        System.out.println(v);
 //    }
 
-    @Param({"100", "200", "400", "800", "10000", "40000", "100" }) // for buble, selection
-    //@Param({"200", "400", "800", "1600", "40000", "160000", "640000"})//for insertion
-    //@Param({"100", "200", "400", "800", "1600",    "10000", "40000", "160000" ,"640000"})
-    // @Param({"400","800", "1600", "3200", "6400", "160000" ,"640000","2560000", "10240000" })
-    private int len;
-
-    @Setup
-    public void prepare() {
-        val = setUp(len, 100);
-    }
-
+    //@Param({"100", "200", "400", "800", "10000", "40000" }) // for buble, selection
+    //@Param({"200", "400", "800", "1600", "40000", "160000"})//for insertion
+    //@Param({"100", "200", "400", "800", "1600",    "10000", "40000", "160000" })
+    // @Param({"400","800", "1600", "3200", "6400", "160000" ,"640000","2560000"})
+    //  private int len;
+//    @Setup
+//    public void prepare() {
+//        val = setUp(len, 100);
+//    }
 //    @Benchmark
 //    public int[] testmerge() {
 //        merge m = new merge();
@@ -68,12 +68,11 @@ public class func {
 //        insertion i = new insertion();
 //        return i.insertionSort(val);
 //    }  
-    @Benchmark
-    public int[] testselection() {
-        selection i = new selection();
-        return i.SelectionSort(val);
-    }
-
+//    @Benchmark
+//    public int[] testselection() {
+//        selection i = new selection();
+//        return i.SelectionSort(val);
+//    }
 //   @Benchmark
 //    public int[] testbuble() {
 //        buble m = new buble();
@@ -84,10 +83,25 @@ public class func {
 //        Arrays.sort(val);
 //        return 0;
 //    } 
+    @Param({"400","800", "1600", "3200", "6400", "160000" ,"640000","2560000"})
+    private int len;
+    @Setup
+    public void prepare() {
+        bh = new BinaryHeap(len);
+        bh.insertall(100);
+    }
+
+
+    @Benchmark
+    public int testheap() {
+       // bh = new BinaryHeap(len);
+       // bh.insertall(100);
+        return bh.delete(0);
+    }
+
     public static void main(String[] args) throws RunnerException, FileNotFoundException {
 
-        System.setOut(new PrintStream("/home/ania/res.txt"));
-
+        //System.setOut(new PrintStream("/home/ania/res.txt"));
         org.openjdk.jmh.runner.options.Options opt = new OptionsBuilder()
                 .include(".*" + func.class.getSimpleName() + ".*")
                 .warmupIterations(3)
