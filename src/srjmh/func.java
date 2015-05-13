@@ -42,11 +42,12 @@ public class func {
 //        System.out.println(v);
 //    }
 
-    //@Param({"100", "200", "400", "800", "10000", "40000", "160000" }) // for buble
+    @Param({"100", "200", "400", "800", "10000", "40000", "100" }) // for buble, selection
+    //@Param({"200", "400", "800", "1600", "40000", "160000", "640000"})//for insertion
     //@Param({"100", "200", "400", "800", "1600",    "10000", "40000", "160000" ,"640000"})
-    @Param({"400","800", "1600", "3200", "6400", "160000" ,"640000","2560000", "10240000" })
+    // @Param({"400","800", "1600", "3200", "6400", "160000" ,"640000","2560000", "10240000" })
     private int len;
-    
+
     @Setup
     public void prepare() {
         val = setUp(len, 100);
@@ -57,13 +58,21 @@ public class func {
 //        merge m = new merge();
 //        return m.sortMerge(val);
 //    }
-    
+//    @Benchmark
+//    public int[] testquick() {
+//        quick m = new quick();
+//        return m.sort(val);
+//    }
+//    @Benchmark
+//    public int[] testinsertion() {
+//        insertion i = new insertion();
+//        return i.insertionSort(val);
+//    }  
     @Benchmark
-    public int[] testquick() {
-        quick m = new quick();
-        return m.sort(val);
+    public int[] testselection() {
+        selection i = new selection();
+        return i.SelectionSort(val);
     }
-    
 
 //   @Benchmark
 //    public int[] testbuble() {
@@ -75,11 +84,10 @@ public class func {
 //        Arrays.sort(val);
 //        return 0;
 //    } 
-    
     public static void main(String[] args) throws RunnerException, FileNotFoundException {
-        
+
         System.setOut(new PrintStream("/home/ania/res.txt"));
-        
+
         org.openjdk.jmh.runner.options.Options opt = new OptionsBuilder()
                 .include(".*" + func.class.getSimpleName() + ".*")
                 .warmupIterations(3)
@@ -88,6 +96,6 @@ public class func {
                 .build();
 
         new Runner(opt).run();
-        
+
     }
 }
