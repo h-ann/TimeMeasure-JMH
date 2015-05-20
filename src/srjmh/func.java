@@ -1,9 +1,12 @@
 package srjmh;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
@@ -19,13 +22,15 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 @State(Scope.Thread)
 @BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.MILLISECONDS)
-//@OutputTimeUnit(TimeUnit.NANOSECONDS)
+//@OutputTimeUnit(TimeUnit.MILLISECONDS) // for buble, selection, merge,quick
+@OutputTimeUnit(TimeUnit.NANOSECONDS) //for insertion, bh 
 public class func {
 
-    BinaryHeap bh;
+    BinaryHeap b;
+    BinaryHeap b1;
     int[] val;
     int x;
+    String st;
 
     public int[] setUp(int size, int max) {
         int[] values = new int[size];
@@ -35,23 +40,32 @@ public class func {
         }
         return values;
     }
-//
-//    public void print(int[] val) {
-//        Vector v = new Vector();
-//        for (int i = 0; i < val.length; i++) {
-//            v.add(val[i]);
-//        }
-//        System.out.println(v);
-//    }
 
-    //@Param({"100", "200", "400", "800", "10000", "40000" }) // for buble, selection
-    //@Param({"200", "400", "800", "1600", "40000", "160000"})//for insertion
+    //@Param({"100", "200", "400", "800", "10000", "40000"}) // for buble
+    //@Param({"200", "400", "800", "1600", "40000", "160000"})//for insertion,selection
     //@Param({"100", "200", "400", "800", "1600",    "10000", "40000", "160000" })
-    // @Param({"400","800", "1600", "3200", "6400", "160000" ,"640000","2560000"})
-    //  private int len;
+    //@Param({"400","800", "1600", "3200", "6400", "160000" ,"640000","2560000"}) 
+//    @Param({"800", "1600", "3200", "6400", "12800","640000","2560000","10240000"}) // merge,quick,impl
+//    private int len;
+//
 //    @Setup
 //    public void prepare() {
 //        val = setUp(len, 100);
+//    }
+//    @Benchmark
+//    public int[] testbuble() {
+//        buble m = new buble();
+//        return m.sortBuble(val);
+//    }
+//    @Benchmark
+//    public int[] testinsertion() {
+//        insertion i = new insertion();
+//        return i.insertionSort(val);
+//    }
+//    @Benchmark
+//    public int[] testselection() {
+//        selection i = new selection();
+//        return i.SelectionSort(val);
 //    }
 //    @Benchmark
 //    public int[] testmerge() {
@@ -63,45 +77,50 @@ public class func {
 //        quick m = new quick();
 //        return m.sort(val);
 //    }
-//    @Benchmark
-//    public int[] testinsertion() {
-//        insertion i = new insertion();
-//        return i.insertionSort(val);
-//    }  
-//    @Benchmark
-//    public int[] testselection() {
-//        selection i = new selection();
-//        return i.SelectionSort(val);
-//    }
-//   @Benchmark
-//    public int[] testbuble() {
-//        buble m = new buble();
-//        return m.sortBuble(val);
-//    }    
 //   @Benchmark
 //    public int testimplquick() {
 //        Arrays.sort(val);
 //        return 0;
-//    } 
+////    } 
     @Param({"400","800", "1600", "3200", "6400", "160000" ,"640000","2560000"})
     private int len;
+
     @Setup
     public void prepare() {
-        bh = new BinaryHeap(len);
-        bh.insertall(100);
-    }
-
+        System.out.println("setup");
+       b = new BinaryHeap(len);
+       b.insertall(10000000);
+      // System.out.println(b.heapSize);
+     }
 
     @Benchmark
-    public int testheap() {
-       // bh = new BinaryHeap(len);
-       // bh.insertall(100);
-        return bh.delete(0);
+    public void testheap() {
+        b.insert(13);
+        b.delete(0);
     }
+//    public String getStr() throws FileNotFoundException {
+//        LinkedList str = new LinkedList();
+//        FileInputStream fis = new FileInputStream("/home/ania/NetBeansProjects/Zaratustra.txt");
+//        String st = new Scanner(fis, "UTF-8").useDelimiter("\\A").next();
+//        return st;
+//    }
+
+//    @Param({"400", "800", "1600", "10000", "40000", "160000"})
+//    private int len;
+//
+//    @Setup
+//    public void prepare() throws FileNotFoundException {
+//        st = getStr();
+//    }
+//
+//    @Benchmark
+//    public String testSubStr() {
+//        return st.substring(100, len);
+//    }
 
     public static void main(String[] args) throws RunnerException, FileNotFoundException {
 
-        //System.setOut(new PrintStream("/home/ania/res.txt"));
+        System.setOut(new PrintStream("/home/ania/RESULTS/resBench/res.txt"));
         org.openjdk.jmh.runner.options.Options opt = new OptionsBuilder()
                 .include(".*" + func.class.getSimpleName() + ".*")
                 .warmupIterations(3)
