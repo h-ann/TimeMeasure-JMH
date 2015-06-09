@@ -22,8 +22,8 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 @State(Scope.Thread)
 @BenchmarkMode(Mode.AverageTime)
-//@OutputTimeUnit(TimeUnit.MILLISECONDS) // for buble, selection, merge,quick
-@OutputTimeUnit(TimeUnit.NANOSECONDS) //for insertion, bh 
+@OutputTimeUnit(TimeUnit.MILLISECONDS) // for buble, selection, merge,quick
+//@OutputTimeUnit(TimeUnit.NANOSECONDS) //for insertion, bh,string 
 public class func {
 
     BinaryHeap b;
@@ -41,82 +41,76 @@ public class func {
         return values;
     }
 
-    //@Param({"100", "200", "400", "800", "10000", "40000"}) // for buble
+    @Param({"100", "200", "400", "800", "10000", "40000"}) // for buble
     //@Param({"200", "400", "800", "1600", "40000", "160000"})//for insertion,selection
     //@Param({"100", "200", "400", "800", "1600",    "10000", "40000", "160000" })
     //@Param({"400","800", "1600", "3200", "6400", "160000" ,"640000","2560000"}) 
-//    @Param({"800", "1600", "3200", "6400", "12800","640000","2560000","10240000"}) // merge,quick,impl
-//    private int len;
-//
-//    @Setup
-//    public void prepare() {
-//        val = setUp(len, 100);
-//    }
-//    @Benchmark
-//    public int[] testbuble() {
-//        buble m = new buble();
-//        return m.sortBuble(val);
-//    }
-//    @Benchmark
-//    public int[] testinsertion() {
-//        insertion i = new insertion();
-//        return i.insertionSort(val);
-//    }
-//    @Benchmark
-//    public int[] testselection() {
-//        selection i = new selection();
-//        return i.SelectionSort(val);
-//    }
-//    @Benchmark
-//    public int[] testmerge() {
-//        merge m = new merge();
-//        return m.sortMerge(val);
-//    }
-//    @Benchmark
-//    public int[] testquick() {
-//        quick m = new quick();
-//        return m.sort(val);
-//    }
-//   @Benchmark
-//    public int testimplquick() {
-//        Arrays.sort(val);
-//        return 0;
-////    } 
-    @Param({"400","800", "1600", "3200", "6400", "160000" ,"640000","2560000"})
+    //@Param({"800", "1600", "3200", "6400", "12800","640000","2560000","10240000"}) // merge,quick,impl
+    //@Param({"400","800", "1600", "3200", "6400", "160000" ,"640000","2560000"})// for bh
+    //@Param({"400", "800", "1600", "10000", "40000", "160000"}) // for substring
     private int len;
 
     @Setup
-    public void prepare() {
-        System.out.println("setup");
+    public void prepare() throws FileNotFoundException {
+       System.out.println("setup");
        b = new BinaryHeap(len);
        b.insertall(10000000);
-      // System.out.println(b.heapSize);
-     }
-
+       val = setUp(len, 100);
+       st = getStr();
+    }
+    
+    @Benchmark
+    public int[] testbuble() {
+        buble m = new buble();
+        return m.sortBuble(val);
+    }
+    
+    @Benchmark
+    public int[] testinsertion() {
+        insertion i = new insertion();
+        return i.insertionSort(val);
+    }
+    
+    @Benchmark
+    public int[] testselection() {
+        selection i = new selection();
+        return i.SelectionSort(val);
+    }
+    
+    @Benchmark
+    public int[] testmerge() {
+        merge m = new merge();
+        return m.sortMerge(val);
+    }
+    
+    @Benchmark
+    public int[] testquick() {
+        quick m = new quick();
+        return m.sort(val);
+    }
+    
+    @Benchmark
+    public int testimplquick() {
+        Arrays.sort(val);
+        return 0;
+    } 
+    
     @Benchmark
     public void testheap() {
         b.insert(13);
         b.delete(0);
     }
-//    public String getStr() throws FileNotFoundException {
-//        LinkedList str = new LinkedList();
-//        FileInputStream fis = new FileInputStream("/home/ania/NetBeansProjects/Zaratustra.txt");
-//        String st = new Scanner(fis, "UTF-8").useDelimiter("\\A").next();
-//        return st;
-//    }
+    public String getStr() throws FileNotFoundException {
+        LinkedList str = new LinkedList();
+        FileInputStream fis = new FileInputStream("/home/ania/NetBeansProjects/Zaratustra.txt");
+        String st = new Scanner(fis, "UTF-8").useDelimiter("\\A").next();
+        return st;
+    }
 
-//    @Param({"400", "800", "1600", "10000", "40000", "160000"})
-//    private int len;
-//
-//    @Setup
-//    public void prepare() throws FileNotFoundException {
-//        st = getStr();
-//    }
-//
-//    @Benchmark
-//    public String testSubStr() {
-//        return st.substring(100, len);
-//    }
+    @Benchmark
+    public String testSubStr() {
+        return st.substring(100, len);
+    }
 
     public static void main(String[] args) throws RunnerException, FileNotFoundException {
 
